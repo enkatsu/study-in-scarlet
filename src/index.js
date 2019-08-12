@@ -20,9 +20,9 @@ window.onload = (ev) => {
 	document.body.appendChild(renderer.domElement);
 	camera.position.set(50, 50, 200);
 	
-	const BG_IMAGE_URL = '/bg.jpg';
-	const VERT_URL = '/shader/bg.frag';
-	const FRAG_URL = '/shader/bg.vert';
+	const BG_IMAGE_URL = 'bg.jpg';
+	const VERT_URL = 'shader/bg.frag';
+	const FRAG_URL = 'shader/bg.vert';
 	const uniforms = {
 		time: {type: 'f', value: 1.0},
 		resolution: {type: 'v2', value: new THREE.Vector2()}
@@ -45,8 +45,8 @@ window.onload = (ev) => {
 	backgroundScene.add(backgroundCamera);
 	
 	const fileLoader = new THREE.FileLoader();
-	const KANJI_JSON_URL = '/kanji-average.json';
-	const FONT_JSON_URL = '/fonts/IPAGothic_Regular.json';
+	const KANJI_JSON_URL = 'kanji-average.json';
+	const FONT_JSON_URL = 'fonts/IPAGothic_Regular.json';
 	fileLoader.load(KANJI_JSON_URL,(data) => {
 		const fontLoader = new THREE.FontLoader();
 		fontLoader.load(FONT_JSON_URL, (font) => {
