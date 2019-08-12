@@ -1,7 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const dist = '/dist'
+const dist = 'docs'
 
 module.exports = {
     mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
@@ -9,7 +9,7 @@ module.exports = {
       main: path.resolve(__dirname, './src/', "index.js")
     },
     output: {
-        path: path.resolve(__dirname, './dist/'),
+        path: path.resolve(__dirname, dist),
         filename: '[name].min.js'
     },
     module: {
@@ -41,7 +41,7 @@ module.exports = {
     serve: {
         open: true,
         port: 8080,
-        contentBase: 'dist',
+        contentBase: dist,
         content: path.resolve(__dirname, 'public'),
     },
     devServer: {
