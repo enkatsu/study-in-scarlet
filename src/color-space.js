@@ -1,4 +1,4 @@
-import "./index.css";
+import './index.css';
 import * as THREE from 'three';
 const OrbitControls = require('three-orbit-controls')(THREE);
 import * as dat from 'dat.gui';
