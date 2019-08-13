@@ -1,14 +1,27 @@
 import "./index.css";
 import * as THREE from 'three';
 const OrbitControls = require('three-orbit-controls')(THREE);
+import * as dat from 'dat.gui';
 
 window.onload = (ev) => {
+	const guiText = function() {
+		this.rotateSpeed = 0.001;
+		this.autoRotate = false;
+		this.explode = function() {
+		};
+	};
+	const text = new guiText();
+  const gui = new dat.GUI();
+  gui.add(text, 'rotateSpeed', 0.0, 0.01);
+  gui.add(text, 'autoRotate');
+  gui.add(text, 'explode');
+	
 	const radians = degree => degree * ( Math.PI / 180 );
 	const scene = new THREE.Scene();
 	const aspect = window.innerWidth / window.innerHeight;
 	const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
 	const renderer = new THREE.WebGLRenderer({antialias: true});
-	const controls = new OrbitControls(camera);
+	const controls = new OrbitControls(camera, renderer.domElement);
 	const axis = new THREE.AxesHelper(100);
 	const light = new THREE.DirectionalLight(0xb4e7f2, 1.5);
 	light.position.set(1, 1, 1);
@@ -91,6 +104,9 @@ window.onload = (ev) => {
 		controls.update();
 		const kanjiGroup = scene.getObjectByName('kanji-group');
 		if (kanjiGroup) {
+			if (text.autoRotate) {
+				kanjiGroup.rotation.y += text.rotateSpeed;
+			}
 	    for (const child of kanjiGroup.children) {
 	      child.lookAt(camera.position);
 	    }
