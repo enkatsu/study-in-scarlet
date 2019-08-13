@@ -8,12 +8,16 @@ window.onload = (ev) => {
     this.focus = '';
     this.rotateSpeed = 1.0;
     this.autoRotate = false;
+    this.gotoIndex = () => {
+      document.location = '../'
+    };
   };
   const text = new guiText();
   const gui = new dat.GUI();
   const focusGui = gui.add(text, 'focus');
   const rotateSpeedGui = gui.add(text, 'rotateSpeed', 0.0, 5.0);
   const autoRotateGui = gui.add(text, 'autoRotate');
+  gui.add(text, 'gotoIndex');
 
   const radians = degree => degree * (Math.PI / 180);
   const scene = new THREE.Scene();
