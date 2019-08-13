@@ -6,12 +6,12 @@ import * as dat from 'dat.gui';
 window.onload = (ev) => {
   const guiText = function() {
     this.rotateSpeed = 0.001;
-    this.autoRotate = false;
+    this.autoRotate = true;
     this.explode = function() {};
   };
   const text = new guiText();
   const gui = new dat.GUI();
-  gui.add(text, 'rotateSpeed', 0.0, 0.01);
+  gui.add(text, 'rotateSpeed', 0.0, 0.002);
   gui.add(text, 'autoRotate');
   gui.add(text, 'explode');
 
@@ -33,7 +33,7 @@ window.onload = (ev) => {
   scene.add(light.target);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
-  camera.position.set(50, 50, 200);
+  camera.position.set(50, 50, 400);
 
   const BG_IMAGE_URL = 'bg.jpg';
   const VERT_URL = 'shader/bg.frag';
