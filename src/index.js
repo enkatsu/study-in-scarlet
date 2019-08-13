@@ -35,9 +35,6 @@ window.onload = (ev) => {
   document.body.appendChild(renderer.domElement);
   camera.position.set(50, 50, 400);
 
-  const BG_IMAGE_URL = 'bg.jpg';
-  const VERT_URL = 'shader/bg.frag';
-  const FRAG_URL = 'shader/bg.vert';
   const uniforms = {
     time: {
       type: 'f',
@@ -50,7 +47,6 @@ window.onload = (ev) => {
   };
   const backgroundScene = new THREE.Scene();
   const backgroundCamera = new THREE.Camera();
-  const bgTexture = THREE.ImageUtils.loadTexture(BG_IMAGE_URL);
   const bgMaterial = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: document.getElementById('vs').textContent,
@@ -134,7 +130,7 @@ window.onload = (ev) => {
     renderer.render(scene, camera);
   };
 
-  const onWindowResize = (event) => {
+  const onWindowResize = (_) => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     uniforms.resolution.value.x = renderer.domElement.width;
     uniforms.resolution.value.y = renderer.domElement.height;
