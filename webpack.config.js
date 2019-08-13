@@ -6,7 +6,8 @@ const dist = 'docs'
 module.exports = {
   mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
   entry: {
-    main: path.resolve(__dirname, './src/', "index.js")
+    'index': path.resolve(__dirname, './src/', "index.js"),
+    'color-space': path.resolve(__dirname, './src/', "color-space.js")
   },
   output: {
     path: path.resolve(__dirname, dist),
@@ -66,7 +67,13 @@ module.exports = {
     ),
     new HtmlWebpackPlugin({
       template: "src/index.html",
-      filename: "./index.html"
+      filename: "./index.html",
+      chunks: ['index'],
+    }),
+    new HtmlWebpackPlugin({
+      template: "src/color-space.html",
+      filename: "./color-space.html",
+      chunks: ['color-space'],
     })
   ],
   performance: {

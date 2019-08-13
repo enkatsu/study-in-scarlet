@@ -4,24 +4,12 @@
 <head>
   <meta charset="utf-8">
   <title>kanji-color-map</title>
-  <script id="fs" type="x-shader/x-fragment">
-    uniform vec2 resolution;
-    uniform float time;
-    #define PI 3.14159265358979323846
-    void main(void){
-      vec2 pos = gl_FragCoord.xy / resolution.xy;
-      vec3 color = vec3(0.0, 0.0, pos.y);
-      gl_FragColor = vec4(color, 1.0);
-    }
-    </script>
-  <script id="vs" type="x-shader/x-vertex">
-    void main() {
-      gl_Position = vec4(position, 1.0);
-    }
-    </script>
 </head>
 
 <body>
+  <ul>
+    <li><a href="/color-space.html">color space</a></li>
+  </ul>
 </body>
 
 </html>
