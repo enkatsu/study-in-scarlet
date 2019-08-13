@@ -7,7 +7,8 @@ module.exports = {
   mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
   entry: {
     'index': path.resolve(__dirname, './src/', "index.js"),
-    'color-space': path.resolve(__dirname, './src/', "color-space.js")
+    'color-space': path.resolve(__dirname, './src/', "color-space.js"),
+    'color-graph': path.resolve(__dirname, './src/', "color-graph.js")
   },
   output: {
     path: path.resolve(__dirname, dist),
@@ -74,6 +75,11 @@ module.exports = {
       template: "src/color-space.html",
       filename: "./color-space.html",
       chunks: ['color-space'],
+    }),
+    new HtmlWebpackPlugin({
+      template: "src/color-graph.html",
+      filename: "./color-graph.html",
+      chunks: ['color-graph'],
     })
   ],
   performance: {
