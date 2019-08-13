@@ -114,11 +114,11 @@ window.onload = (ev) => {
     uniforms.time.value += 0.05;
     requestAnimationFrame(render);
     controls.update();
+    if (text.autoRotate) {
+      scene.rotation.y += text.rotateSpeed;
+    }
     const kanjiGroup = scene.getObjectByName('kanji-group');
     if (kanjiGroup) {
-      if (text.autoRotate) {
-        kanjiGroup.rotation.y += text.rotateSpeed;
-      }
       for (const child of kanjiGroup.children) {
         child.lookAt(camera.position);
       }
