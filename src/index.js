@@ -5,25 +5,26 @@ import * as dat from 'dat.gui';
 
 window.onload = (ev) => {
   const guiText = function() {
-    this.rotateSpeed = 0.001;
-    this.autoRotate = true;
-    this.explode = function() {};
+    this.focus = '';
+    this.rotateSpeed = 1.0;
+    this.autoRotate = false;
   };
   const text = new guiText();
   const gui = new dat.GUI();
-  gui.add(text, 'rotateSpeed', 0.0, 0.002);
-  gui.add(text, 'autoRotate');
-  gui.add(text, 'explode');
+  const focusGui = gui.add(text, 'focus');
+  const rotateSpeedGui = gui.add(text, 'rotateSpeed', 0.0, 5.0);
+  const autoRotateGui = gui.add(text, 'autoRotate');
 
   const radians = degree => degree * (Math.PI / 180);
   const scene = new THREE.Scene();
   const aspect = window.innerWidth / window.innerHeight;
   const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({
-    antialias: true
-  });
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableKeys = false;
+  autoRotateGui.onChange( v => { controls.autoRotate = v; });
+  rotateSpeedGui.onChange( v => { controls.autoRotateSpeed = v; });
   const axis = new THREE.AxesHelper(100);
   const light = new THREE.DirectionalLight(0xb4e7f2, 1.5);
   light.position.set(1, 1, 1);
@@ -36,14 +37,8 @@ window.onload = (ev) => {
   camera.position.set(50, 50, 400);
 
   const uniforms = {
-    time: {
-      type: 'f',
-      value: 1.0
-    },
-    resolution: {
-      type: 'v2',
-      value: new THREE.Vector2()
-    }
+    time: { type: 'f', value: 1.0 },
+    resolution: { type: 'v2', value: new THREE.Vector2() }
   };
   const backgroundScene = new THREE.Scene();
   const backgroundCamera = new THREE.Camera();
@@ -68,12 +63,32 @@ window.onload = (ev) => {
       const fontLoader = new THREE.FontLoader();
       fontLoader.load(FONT_JSON_URL, (font) => {
         const kanjis = JSON.parse(data).kanjis;
+        // *** focus text input ***
+        const focusInput = focusGui.domElement.getElementsByTagName('input')[0];
+        focusInput.setAttribute('list', 'kanjis');
+        const kanjiDataList = document.createElement('datalist');
+        kanjiDataList.setAttribute('id', 'kanjis');
+        kanjis.forEach( kanji => {
+          const kanjiOption = document.createElement('option');
+          kanjiOption.setAttribute('value', kanji.name);
+          kanjiDataList.appendChild(kanjiOption);
+        });
+        focusGui.domElement.appendChild(kanjiDataList);
+        focusGui.onFinishChange( ev => {
+          const centerObj = scene.getObjectByName(`kanji-${ev}`);
+          if (centerObj) {
+            controls.target = centerObj.position;
+          } else {
+            controls.target = axis.position;
+          }
+        });
+
         const meshs = kanjis.map(kanji => {
           const geometory = new THREE.TextGeometry(kanji.name, {
             font: font,
             size: 20,
             height: 5,
-            curveSegments: 12
+            curveSegments: 6,
           });
           const materials = [
             new THREE.MeshBasicMaterial({
@@ -114,9 +129,6 @@ window.onload = (ev) => {
     uniforms.time.value += 0.05;
     requestAnimationFrame(render);
     controls.update();
-    if (text.autoRotate) {
-      scene.rotation.y += text.rotateSpeed;
-    }
     const kanjiGroup = scene.getObjectByName('kanji-group');
     if (kanjiGroup) {
       for (const child of kanjiGroup.children) {
