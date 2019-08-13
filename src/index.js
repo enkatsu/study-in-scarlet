@@ -21,6 +21,7 @@ window.onload = (ev) => {
 	const aspect = window.innerWidth / window.innerHeight;
 	const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
 	const renderer = new THREE.WebGLRenderer({antialias: true});
+	renderer.setPixelRatio(window.devicePixelRatio);
 	const controls = new OrbitControls(camera, renderer.domElement);
 	const axis = new THREE.AxesHelper(100);
 	const light = new THREE.DirectionalLight(0xb4e7f2, 1.5);
@@ -32,7 +33,7 @@ window.onload = (ev) => {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	document.body.appendChild(renderer.domElement);
 	camera.position.set(50, 50, 200);
-	
+
 	const BG_IMAGE_URL = 'bg.jpg';
 	const VERT_URL = 'shader/bg.frag';
 	const FRAG_URL = 'shader/bg.vert';
@@ -56,7 +57,7 @@ window.onload = (ev) => {
 	backgroundMesh.material.depthWrite = false;
 	backgroundScene.add(backgroundMesh);
 	backgroundScene.add(backgroundCamera);
-	
+
 	const fileLoader = new THREE.FileLoader();
 	const KANJI_JSON_URL = 'kanji-average.json';
 	const FONT_JSON_URL = 'fonts/IPAGothic_Regular.json';
@@ -117,7 +118,7 @@ window.onload = (ev) => {
 		renderer.render(backgroundScene, backgroundCamera);
 		renderer.render(scene, camera);
 	};
-	
+
 	const onWindowResize = (event) => {
 		renderer.setSize(window.innerWidth, window.innerHeight);
     uniforms.resolution.value.x = renderer.domElement.width;
