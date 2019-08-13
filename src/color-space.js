@@ -61,7 +61,7 @@ window.onload = (ev) => {
   backgroundScene.add(backgroundCamera);
 
   const fileLoader = new THREE.FileLoader();
-  const KANJI_JSON_URL = 'kanji-average.json';
+  const KANJI_JSON_URL = 'data/kanji-average.json';
   const FONT_JSON_URL = 'fonts/IPAGothic_Regular.json';
   fileLoader.load(KANJI_JSON_URL, (data) => {
       const fontLoader = new THREE.FontLoader();
