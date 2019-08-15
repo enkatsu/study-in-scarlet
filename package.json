@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "d3": "^5.9.7",
     "dat.gui": "^0.7.6",
     "three": "^0.107.0",
     "three-orbit-controls": "^82.1.0"
