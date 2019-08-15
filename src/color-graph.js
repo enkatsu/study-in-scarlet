@@ -114,7 +114,7 @@ const renderGraph = (data) => {
   return chart(data);
 };
 
-const apiUrl = '/data/betweenness-centrality.json';
+const apiUrl = 'data/betweenness-centrality.json';
 d3.json(apiUrl).then(data => {
   data.nodes = data.nodes.map(d => {
     return {
