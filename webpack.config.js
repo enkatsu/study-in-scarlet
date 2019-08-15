@@ -6,9 +6,10 @@ const dist = 'docs'
 module.exports = {
   mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
   entry: {
-    'index': path.resolve(__dirname, './src/', "index.js"),
-    'color-space': path.resolve(__dirname, './src/', "color-space.js"),
-    'color-graph': path.resolve(__dirname, './src/', "color-graph.js")
+    'index': path.resolve(__dirname, './src/', 'index.js'),
+    'color-space': path.resolve(__dirname, './src/', 'color-space.js'),
+    'color-graph': path.resolve(__dirname, './src/', 'color-graph.js'),
+    'circle-color-graph': path.resolve(__dirname, './src/', 'circle-color-graph.js')
   },
   output: {
     path: path.resolve(__dirname, dist),
@@ -80,6 +81,11 @@ module.exports = {
       template: "src/color-graph.html",
       filename: "./color-graph.html",
       chunks: ['color-graph'],
+    }),
+    new HtmlWebpackPlugin({
+      template: "src/circle-color-graph.html",
+      filename: "./circle-color-graph.html",
+      chunks: ['circle-color-graph'],
     })
   ],
   performance: {
