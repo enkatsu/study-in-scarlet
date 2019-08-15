@@ -9,7 +9,7 @@ window.onload = (ev) => {
     this.rotateSpeed = 1.0;
     this.autoRotate = false;
     this.gotoIndex = () => {
-      document.location = '../'
+      document.location = './'
     };
   };
   const text = new guiText();
