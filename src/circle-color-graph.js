@@ -80,6 +80,8 @@ const renderGraph = (data) => {
       .attr('viewBox', [0, 0, width, height]);
     const zoomLayer = svg.append('g');
     const zoomed = () => {
+      // node.attr('transform', `scale(${1 / d3.event.transform.k}), translate(${1 / d3.event.transform.x}, ${1 / d3.event.transform.y})`);
+      node.attr('r', 1 / d3.event.transform.k * nodeRad);
       zoomLayer.attr('transform', d3.event.transform);
     };
     svg.call(d3.zoom()
@@ -105,7 +107,7 @@ const renderGraph = (data) => {
       .attr('stroke-width', d => 0.5);
     const node = zoomLayer.append('g')
       .attr('stroke', '#fff')
-      .attr('stroke-width', 1.5)
+      .attr('stroke-width', 0)
       .selectAll('circle')
       .data(nodes)
       .style('cursor', 'default')
@@ -120,15 +122,22 @@ const renderGraph = (data) => {
       .attr('font-weight', 'bolder');
     node.on('mouseleave', d => {
       link.style('visibility', 'visible');
+      node.style('visibility', 'visible');
     });
     node.on('mouseenter', d => {
-      link.filter(l => l.source.id != d.id && l.target.id != d.id)
-        .style('visibility', 'hidden');
+      const notLink = link.filter(l => l.source.id != d.id && l.target.id != d.id);
+      const notNodeIds = notLink.data()
+        .map(l => [l.source.id, l.target.id])
+        .filter(l => l[0] != d.id || l[1] != d.id)
+        .flat()
+        .filter((x, i, self) => self.indexOf(x) == i)
+      node.filter(n => notNodeIds.includes(n.id)).style('visibility', 'hidden');
+      notLink.style('visibility', 'hidden');
       tooltip.style('visibility', 'visible')
         .text(_ => d.name)
         // .attr('fill', _ => d.color)
         .attr('fill', _ => '#333333')
-        .attr('x', _ => d.pos[0])
+        .attr('x', _ => d.pos[0] + 20)
         .attr('y', _ => d.pos[1]);
     });
     return svg.node();
