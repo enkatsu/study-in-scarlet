@@ -1,3 +1,4 @@
+import './circle-color-graph.css'
 import * as d3 from 'd3';
 
 const rgb2hex = rgb => {
@@ -55,7 +56,7 @@ const renderGraph = (data) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
   const radius = Math.min(window.innerHeight, window.innerWidth) / 2 - 30;
-  const nodeRad = 10;
+  const nodeRad = 7;
   const chart = (data) => {
     const ang2pos = ang => [Math.cos(ang), Math.sin(ang)];
     const nodes = data.nodes.map(d => Object.create(d));
@@ -70,18 +71,23 @@ const renderGraph = (data) => {
     });
     const links = data.links.map(d => Object.create(d));
     links.forEach(l => {
-      const source = nodes.find(n => n.id == l.source);
-      const target = nodes.find(n => n.id == l.target);
-      l.source = source;
-      l.target = target;
+      l.source = nodes.find(n => n.id == l.source);
+      l.target = nodes.find(n => n.id == l.target);
     });
 
     const svg = d3.create('svg')
       .attr('viewBox', [0, 0, width, height]);
+
+    const background = svg.append('rect')
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('fill', 'black');
+
     const zoomLayer = svg.append('g');
     const zoomed = () => {
       // node.attr('transform', `scale(${1 / d3.event.transform.k}), translate(${1 / d3.event.transform.x}, ${1 / d3.event.transform.y})`);
-      node.attr('r', 1 / d3.event.transform.k * nodeRad);
+      node.attr('r', 1 / d3.event.transform.k * nodeRad)
+        .attr('stroke-width', 1 / d3.event.transform.k);
       zoomLayer.attr('transform', d3.event.transform);
     };
     svg.call(d3.zoom()
@@ -89,25 +95,27 @@ const renderGraph = (data) => {
       .on('zoom', zoomed));
 
     const link = zoomLayer.append('g')
-      .attr('stroke-opacity', 0.6)
       .selectAll('line')
       .data(links)
       .join('line')
       .attr('stroke', d => {
+        return 'white'
+        return '#64C8FA'
         return rgb2hex([
           (d.source.rgb[0] + d.target.rgb[0]) / 2,
           (d.source.rgb[1] + d.target.rgb[1]) / 2,
           (d.source.rgb[2] + d.target.rgb[2]) / 2
         ]);
       })
+      .attr('stroke-opacity', 0.3)
       .attr('x1', d => d.source.pos[0])
       .attr('y1', d => d.source.pos[1])
       .attr('x2', d => d.target.pos[0])
       .attr('y2', d => d.target.pos[1])
       .attr('stroke-width', d => 0.5);
     const node = zoomLayer.append('g')
-      .attr('stroke', '#fff')
-      .attr('stroke-width', 0)
+      .attr('stroke', '#DDDDDD')
+      .attr('stroke-width', 1)
       .selectAll('circle')
       .data(nodes)
       .style('cursor', 'default')
@@ -119,26 +127,32 @@ const renderGraph = (data) => {
 
     const tooltip = zoomLayer.append('text')
       .attr('class', 'tooltip')
-      .attr('font-weight', 'bolder');
+      .attr('font-weight', 'bolder')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('stroke', '#DDDDDD')
+      .attr('stroke-width', 0.5)
+      .attr('x', width / 2)
+      .attr('y', height / 2)
+      .style('font-size', '34px');
     node.on('mouseleave', d => {
       link.style('visibility', 'visible');
       node.style('visibility', 'visible');
     });
     node.on('mouseenter', d => {
       const notLink = link.filter(l => l.source.id != d.id && l.target.id != d.id);
-      const notNodeIds = notLink.data()
+      const linkedNodeIds = links
         .map(l => [l.source.id, l.target.id])
-        .filter(l => l[0] != d.id || l[1] != d.id)
+        .filter(l => l[0] == d.id || l[1] == d.id)
         .flat()
-        .filter((x, i, self) => self.indexOf(x) == i)
-      node.filter(n => notNodeIds.includes(n.id)).style('visibility', 'hidden');
+        .filter((x, i, self) => self.indexOf(x) === i);
+      console.log(linkedNodeIds);
+      node.filter(n => !linkedNodeIds.includes(n.id) && n.id != d.id).style('visibility', 'hidden');
       notLink.style('visibility', 'hidden');
       tooltip.style('visibility', 'visible')
         .text(_ => d.name)
-        // .attr('fill', _ => d.color)
-        .attr('fill', _ => '#333333')
-        .attr('x', _ => d.pos[0] + 20)
-        .attr('y', _ => d.pos[1]);
+        .attr('fill', _ => d.color);
+        // .attr('fill', _ => '#DDDDDD')
     });
     return svg.node();
   }
