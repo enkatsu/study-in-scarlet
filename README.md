@@ -1,3 +1,3 @@
 # study-in-scarlet
 
-[page](https://enkatsu.github.io/kanji-color-map/)
+[page](https://enkatsu.github.io/study-in-scarlet/)
