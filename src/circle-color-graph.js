@@ -1,6 +1,8 @@
 import './circle-color-graph.css'
 import * as d3 from 'd3';
 
+const API_URL = 'public/data/betweenness-centrality.json';
+
 const rgb2hex = rgb => {
 	return '#' + rgb.map(value => {
 		return ( '0' + value.toString( 16 ) ).slice( -2 ) ;
@@ -160,8 +162,7 @@ const renderGraph = (data) => {
   return chart(data);
 };
 
-const apiUrl = 'data/betweenness-centrality.json';
-d3.json(apiUrl).then(data => {
+d3.json(API_URL).then(data => {
   data.nodes = data.nodes.map(d => {
     return {
       'id': d.id,
