@@ -11,10 +11,6 @@ module.exports = {
     'color-graph': path.resolve(__dirname, './src/', 'color-graph.js'),
     'circle-color-graph': path.resolve(__dirname, './src/', 'circle-color-graph.js')
   },
-  output: {
-    path: path.resolve(__dirname, dist),
-    filename: '[name].min.js'
-  },
   module: {
     rules: [{
         test: /\.js$/,
@@ -23,12 +19,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: [/node_modules/],
         use: ["style-loader", {
           loader: "css-loader",
           options: {
             url: false,
-            modules: true
+            modules: false
           }
         }]
       },
@@ -41,10 +36,18 @@ module.exports = {
             minimize: true
           }
         }]
+      },
+      {
+        test: /\.(jpg|png)$/,
+        loaders: 'url-loader'
       }
     ]
   },
   devtool: 'source-map',
+  output: {
+    path: path.resolve(__dirname, dist),
+    filename: '[name].min.js'
+  },
   serve: {
     open: true,
     port: 8080,
@@ -61,8 +64,8 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin(
       [{
-        from: 'public',
-        to: '',
+        from: 'src/public',
+        to: 'public',
       }, ], {
         context: ''
       }
@@ -70,7 +73,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "src/index.html",
       filename: "./index.html",
-      chunks: ['index'],
+      chunks: ['index']
     }),
     new HtmlWebpackPlugin({
       template: "src/color-space.html",

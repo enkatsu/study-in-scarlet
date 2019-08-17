@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
 
+const API_URL = 'public/data/betweenness-centrality.json';
+
 const renderGraph = (data) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -114,8 +116,7 @@ const renderGraph = (data) => {
   return chart(data);
 };
 
-const apiUrl = 'data/betweenness-centrality.json';
-d3.json(apiUrl).then(data => {
+d3.json(API_URL).then(data => {
   data.nodes = data.nodes.map(d => {
     return {
       'id': d.id,
