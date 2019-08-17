@@ -57,6 +57,7 @@ const renderGraph = (data) => {
   const height = window.innerHeight;
   const radius = Math.min(window.innerHeight, window.innerWidth) / 2 - 30;
   const nodeRad = 7;
+  const linkOpacity = 0.3;
   const chart = (data) => {
     const ang2pos = ang => [Math.cos(ang), Math.sin(ang)];
     const nodes = data.nodes.map(d => Object.create(d));
@@ -106,7 +107,7 @@ const renderGraph = (data) => {
           (d.source.rgb[2] + d.target.rgb[2]) / 2
         ]);
       })
-      .attr('stroke-opacity', 0.3)
+      .attr('stroke-opacity', linkOpacity)
       .attr('stroke-width', 1)
       .attr('x1', d => d.source.pos[0])
       .attr('y1', d => d.source.pos[1])
