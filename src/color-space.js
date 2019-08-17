@@ -1,4 +1,5 @@
 import './color-space.css';
+import * as TWEEN from '@tweenjs/tween.js'
 import * as THREE from 'three';
 const OrbitControls = require('three-orbit-controls')(THREE);
 import * as dat from 'dat.gui';
@@ -80,11 +81,63 @@ window.onload = (ev) => {
         focusGui.domElement.appendChild(kanjiDataList);
         focusGui.onFinishChange( ev => {
           const centerObj = scene.getObjectByName(`kanji-${ev}`);
-          if (centerObj) {
-            controls.target = centerObj.position;
-          } else {
-            controls.target = axis.position;
-          }
+          const startPosition = {
+            x: camera.position.x,
+            y: camera.position.y,
+            z: camera.position.z
+          };
+          const startTarget = {
+            x: controls.target.x,
+            y: controls.target.y,
+            z: controls.target.z
+          };
+          const start = {
+            positionX: startPosition.x,
+            positionY: startPosition.y,
+            positionZ: startPosition.z,
+            targetX: startTarget.x,
+            targetY: startTarget.y,
+            targetZ: startTarget.z,
+          };
+          const endPosition = centerObj ? {
+            x: centerObj.position.x,
+            y: centerObj.position.y,
+            z: centerObj.position.z + 100
+          }: {
+            x: axis.position.x,
+            y: axis.position.y,
+            z: axis.position.z + 400
+          };
+          const endTarget = centerObj ? {
+            x: centerObj.position.x,
+            y: centerObj.position.y,
+            z: centerObj.position.z
+          }: {
+            x: axis.position.x,
+            y: axis.position.y,
+            z: axis.position.z
+          };
+          const end = {
+            positionX: endPosition.x,
+            positionY: endPosition.y,
+            positionZ: endPosition.z,
+            targetX: endTarget.x,
+            targetY: endTarget.y,
+            targetZ: endTarget.z,
+          };
+          const tween = new TWEEN.Tween(start)
+            .to(end, 1000)
+            .easing(TWEEN.Easing.Exponential.Out)
+            .onUpdate(function() {
+              console.log(start);
+              camera.position.x = start.positionX;
+              camera.position.y = start.positionY;
+              camera.position.z = start.positionZ;
+              controls.target.x = start.targetX;
+              controls.target.y = start.targetY;
+              controls.target.z = start.targetZ;
+            })
+            .start();
         });
 
         const meshs = kanjis.map(kanji => {
@@ -130,6 +183,7 @@ window.onload = (ev) => {
   );
 
   const render = () => {
+    TWEEN.update();
     uniforms.time.value += 0.05;
     requestAnimationFrame(render);
     controls.update();

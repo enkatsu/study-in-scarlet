@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@tweenjs/tween.js": "^17.4.0",
     "d3": "^5.9.7",
     "dat.gui": "^0.7.6",
     "three": "^0.107.0",
