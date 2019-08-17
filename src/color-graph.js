@@ -89,8 +89,8 @@ const renderGraph = (data) => {
         .text(_ => d.name)
         // .attr('fill', _ => d.color)
         .attr('fill', _ => '#333333')
-        .attr('x', _ => d.x)
-        .attr('y', _ => d.y);
+        .attr('x', _ => d.x + 20)
+        .attr('y', _ => d.y - 20);
     });
     node.on('mouseout', d => {
       tooltip.style('visibility', 'hidden');
