@@ -85,7 +85,6 @@ const renderGraph = (data) => {
 
     const zoomLayer = svg.append('g');
     const zoomed = () => {
-      // node.attr('transform', `scale(${1 / d3.event.transform.k}), translate(${1 / d3.event.transform.x}, ${1 / d3.event.transform.y})`);
       node.attr('r', 1 / d3.event.transform.k * nodeRad)
         .attr('stroke-width', 1 / d3.event.transform.k);
       zoomLayer.attr('transform', d3.event.transform);
@@ -108,11 +107,11 @@ const renderGraph = (data) => {
         ]);
       })
       .attr('stroke-opacity', 0.3)
+      .attr('stroke-width', 1)
       .attr('x1', d => d.source.pos[0])
       .attr('y1', d => d.source.pos[1])
       .attr('x2', d => d.target.pos[0])
-      .attr('y2', d => d.target.pos[1])
-      .attr('stroke-width', d => 0.5);
+      .attr('y2', d => d.target.pos[1]);
     const node = zoomLayer.append('g')
       .attr('stroke', '#DDDDDD')
       .attr('stroke-width', 1)
@@ -138,17 +137,18 @@ const renderGraph = (data) => {
     node.on('mouseleave', d => {
       link.style('visibility', 'visible');
       node.style('visibility', 'visible');
+      tooltip.style('visibility', 'hidden');
     });
     node.on('mouseenter', d => {
-      const notLink = link.filter(l => l.source.id != d.id && l.target.id != d.id);
       const linkedNodeIds = links
         .map(l => [l.source.id, l.target.id])
         .filter(l => l[0] == d.id || l[1] == d.id)
         .flat()
         .filter((x, i, self) => self.indexOf(x) === i);
-      console.log(linkedNodeIds);
-      node.filter(n => !linkedNodeIds.includes(n.id) && n.id != d.id).style('visibility', 'hidden');
-      notLink.style('visibility', 'hidden');
+      node.filter(n => !linkedNodeIds.includes(n.id) && n.id != d.id)
+        .style('visibility', 'hidden');
+      link.filter(l => l.source.id != d.id && l.target.id != d.id)
+        .style('visibility', 'hidden');
       tooltip.style('visibility', 'visible')
         .text(_ => d.name)
         .attr('fill', _ => d.color);
