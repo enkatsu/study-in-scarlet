@@ -1,3 +1,4 @@
+import './color-graph.css'
 import * as d3 from 'd3';
 
 const API_URL = 'public/data/betweenness-centrality.json';
@@ -44,6 +45,10 @@ const renderGraph = (data) => {
     const svg = d3.create('svg')
       .attr('viewBox', [0, 0, width, height]);
 
+    const background = svg.append('rect')
+      .attr('width', '100%')
+      .attr('height', '100%')
+      .attr('fill', '#FCFCFC');
 
     const zoomLayer = svg.append('g');
     const zoomed = () => {
