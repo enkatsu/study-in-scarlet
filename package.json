@@ -8,7 +8,7 @@
     "d3": "^5.9.7",
     "dat.gui": "^0.7.6",
     "mini.css": "^3.0.1",
-    "three": "^0.107.0",
+    "three": "^0.125.0",
     "three-orbit-controls": "^82.1.0"
   },
   "devDependencies": {
