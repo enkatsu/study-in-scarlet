@@ -3,14 +3,16 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const dist = 'docs'
 
+const entry = {
+  'index': path.resolve(__dirname, './src/', 'index.js'),
+  'color-space': path.resolve(__dirname, './src/', 'color-space.js'),
+  'color-graph': path.resolve(__dirname, './src/', 'color-graph.js'),
+  'circle-color-graph': path.resolve(__dirname, './src/', 'circle-color-graph.js')
+};
+
 module.exports = {
   mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
-  entry: {
-    'index': path.resolve(__dirname, './src/', 'index.js'),
-    'color-space': path.resolve(__dirname, './src/', 'color-space.js'),
-    'color-graph': path.resolve(__dirname, './src/', 'color-graph.js'),
-    'circle-color-graph': path.resolve(__dirname, './src/', 'circle-color-graph.js')
-  },
+  entry,
   module: {
     rules: [{
         test: /\.js$/,

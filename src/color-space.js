@@ -49,15 +49,13 @@ window.onload = (ev) => {
   };
   const backgroundScene = new THREE.Scene();
   const backgroundCamera = new THREE.Camera();
+  const bgGeometry = new THREE.PlaneGeometry(2, 2);
   const bgMaterial = new THREE.ShaderMaterial({
     uniforms: uniforms,
     vertexShader: document.getElementById('vs').textContent,
     fragmentShader: document.getElementById('fs').textContent
   });
-  const backgroundMesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(2, 2, 0),
-    bgMaterial
-  );
+  const backgroundMesh = new THREE.Mesh(bgGeometry, bgMaterial);
   backgroundMesh.material.depthTest = false;
   backgroundMesh.material.depthWrite = false;
   backgroundScene.add(backgroundMesh);

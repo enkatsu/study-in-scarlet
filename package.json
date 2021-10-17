@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "start": "npx webpack-dev-server",
     "build": "npx webpack --mode production",
@@ -14,7 +17,7 @@
     "d3": "^5.16.0",
     "dat.gui": "^0.7.7",
     "mini.css": "^3.0.1",
-    "three": "^0.107.0",
+    "three": "^0.132.2",
     "three-orbit-controls": "^82.1.0"
   },
   "devDependencies": {
