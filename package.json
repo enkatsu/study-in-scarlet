@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@tweenjs/tween.js": "^17.6.0",
-    "d3": "^5.16.0",
+    "d3": "^7.7.0",
     "dat.gui": "^0.7.7",
     "mini.css": "^3.0.1",
     "three": "^0.132.2",
